@@ -8,7 +8,7 @@ namespace bp = boost::python;
  */
 void export_unit_class()
 {
-     bp::class_<Unit, boost::noncopyable>("Unit", bp::no_init)
+    bp::class_<Unit, boost::noncopyable>("Unit", bp::no_init)
         .def("GetName", &Unit::GetName, bp::return_value_policy<bp::copy_const_reference>())
         .def("GetLevel", &Unit::GetLevel)
         .def("GetGUID", &PythonUnitAdapter::GetGUIDLow)

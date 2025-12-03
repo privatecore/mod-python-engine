@@ -1,7 +1,6 @@
 #ifndef MOD_PYTHON_ENGINE_PLAYER_ADAPTER_H
 #define MOD_PYTHON_ENGINE_PLAYER_ADAPTER_H
 
-#include "Define.h"
 #include "Player.h"
 #include "Chat.h"
 

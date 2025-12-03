@@ -7,6 +7,7 @@ void export_unit_class();
 void export_creature_class();
 void export_player_class();
 void export_gameobject_class();
+void export_item_class();
 
 // Register module name with Python before Py_Initialize()
 extern "C" PyObject* PyInit_azerothcore();
@@ -39,4 +40,5 @@ BOOST_PYTHON_MODULE(azerothcore)
     export_creature_class();
     export_player_class();
     export_gameobject_class();
+    export_item_class();
 }
