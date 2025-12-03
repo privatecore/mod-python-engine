@@ -62,7 +62,7 @@ void PythonEngine::Shutdown()
         std::unique_lock<std::shared_mutex> lock(hookMutex);
         PythonAPI::GILGuard gil;
 
-        hookRegistry.clear();
+        hookMap.clear();
         main_namespace = PythonAPI::Object(); // Release main module ref
     }
 
@@ -83,7 +83,7 @@ void PythonEngine::LoadScripts()
 
     LOG_INFO("module.python", "Loading Python scripts...");
 
-    std::string pathStr = sConfigMgr->GetOption<std::string>("Python.ScriptsPath", "scripts");
+    std::string pathStr = sConfigMgr->GetOption<std::string>("Python.ScriptsPath", "python_scripts");
     fs::path scriptsPath(pathStr);
 
     if (!scriptsPath.is_absolute())
@@ -121,7 +121,7 @@ void PythonEngine::ReloadScripts()
         std::unique_lock<std::shared_mutex> lock(hookMutex);
         PythonAPI::GILGuard gil;
 
-        hookRegistry.clear();
+        hookMap.clear();
     }
     // Release lock here to allow re-entry during script execution if needed
     // (though ExecuteScript re-locks GIL)
@@ -164,14 +164,14 @@ void PythonEngine::RegisterHook(const std::string& eventName, PythonAPI::Object 
         return;
     }
 
-    auto hookIdOpt = GetPythonHookByName(eventName);
+    auto hookIdOpt = GetHookByName(eventName);
     if (!hookIdOpt.has_value())
     {
         LOG_ERROR("module.python", "Attempted to register unknown event hook '{}'.", eventName);
         return;
     }
 
-    PythonHook hookId = hookIdOpt.value();
+    HookInfo hookId = hookIdOpt.value();
 
     // If triggerDepth > 0, we are currently inside a Trigger (holding shared lock).
     // Attempting to acquire unique lock now would cause a deadlock.
@@ -185,7 +185,7 @@ void PythonEngine::RegisterHook(const std::string& eventName, PythonAPI::Object 
     std::unique_lock<std::shared_mutex> lock(hookMutex);
     try
     {
-        hookRegistry[hookId][entryId].push_back(callback);
+        hookMap[hookId][entryId].push_back(callback);
         LOG_DEBUG("module.python", "Registered hook '{}' for entry {}", eventName, entryId);
     }
     catch (...)

@@ -1,4 +1,5 @@
 #include "PythonEngine.h"
+#include "HookMacros.h"
 #include "ScriptMgr.h"
 
 class PythonAccountScript : public AccountScript
@@ -8,12 +9,12 @@ public:
 
     void OnAccountLogin(uint32 accountId) override
     {
-        sPythonEngine->Trigger(PythonHook::ACCOUNT_LOGIN, 0, accountId);
+        TRIGGER_ACCOUNT_HOOK(ON_ACCOUNT_LOGIN, accountId);
     }
 
     void OnFailedAccountLogin(uint32 accountId) override
     {
-        sPythonEngine->Trigger(PythonHook::ACCOUNT_FAILED_LOGIN, 0, accountId);
+        TRIGGER_ACCOUNT_HOOK(ON_FAILED_ACCOUNT_LOGIN, accountId);
     }
 };
 

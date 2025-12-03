@@ -70,7 +70,7 @@ The module comes with a default configuration file. Rename `mod-python.conf.dist
 Python.Enabled = 1
 
 # Path to your Python scripts (relative or absolute)
-Python.ScriptsPath = "scripts"
+Python.ScriptsPath = "python_scripts"
 ```
 
 ## Example
@@ -82,13 +82,13 @@ Place your `.py` files in the folder specified by `Python.ScriptsPath`. The engi
 ```python
 import azerothcore as ac
 
-def on_player_login(player):
+def on_login(player):
     name = player.GetName()
     print(f"Player {name} has logged in!")
     player.SendSysMessage(f"Welcome to the server, {name}!")
 
 # Register the hook
-ac.Register("PLAYER_LOGIN", on_player_login)
+ac.Register("PLAYER_ON_LOGIN", on_login)
 ```
 
 ### Example Script: Gossip Hello
@@ -104,7 +104,7 @@ def on_gossip_hello(player, creature):
         player.AddItem(ITEM_ID, 1)
 
 # Register hook for specific entry ID
-ac.Register("CREATURE_GOSSIP_HELLO", on_gossip_hello, NPC_ID)
+ac.Register("CREATURE_ON_GOSSIP_HELLO", on_gossip_hello, NPC_ID)
 ```
 
 ## Contributing

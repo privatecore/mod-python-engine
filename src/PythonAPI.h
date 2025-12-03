@@ -15,12 +15,23 @@ struct PythonAPI
     using ErrorAlreadySet = boost::python::error_already_set;
 
     // Helpers
-    template<typename T> static inline auto Ptr(T* ptr) { return boost::python::ptr(ptr); }
-    template<typename T> static inline T Extract(const Object& obj) { return boost::python::extract<T>(obj); }
+    template<typename T>
+    static inline auto Ptr(T* ptr)
+    {
+        return boost::python::ptr(ptr);
+    }
+    template<typename T>
+    static inline T Extract(const Object& obj)
+    {
+        return boost::python::extract<T>(obj);
+    }
     static inline bool IsNone(const Object& obj) { return obj.ptr() == Py_None; }
     static inline Object FromString(const std::string& s) { return Object(s); }
     static inline Object Import(const std::string& name) { return boost::python::import(boost::python::str(name)); }
-    static inline Object ExecFile(const std::string& filepath, Object& globals, Object& locals) { return boost::python::exec_file(filepath.c_str(), globals, locals); }
+    static inline Object ExecFile(const std::string& filepath, Object& globals, Object& locals)
+    {
+        return boost::python::exec_file(filepath.c_str(), globals, locals);
+    }
 
     // RAII guard for the GIL
     struct GILGuard

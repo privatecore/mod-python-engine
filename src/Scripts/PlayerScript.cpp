@@ -1,4 +1,6 @@
+// PlayerHooks.cpp
 #include "PythonEngine.h"
+#include "HookMacros.h"
 #include "ScriptMgr.h"
 #include "Player.h"
 
@@ -9,32 +11,32 @@ public:
 
     void OnPlayerLogin(Player* player) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_LOGIN, 0, player);
+        TRIGGER_PLAYER_HOOK(ON_LOGIN, player);
     }
 
     void OnPlayerLogout(Player* player) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_LOGOUT, 0, player);
+        TRIGGER_PLAYER_HOOK(ON_LOGOUT, player);
     }
 
     void OnPlayerPVPKill(Player* killer, Player* killed) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_PVP_KILL, 0, killer, killed);
+        TRIGGER_PLAYER_HOOK(ON_PVP_KILL, killer, killed);
     }
 
     void OnPlayerGiveXP(Player* player, uint32& amount, Unit* victim, uint8 xpSource) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_GIVE_XP, 0, player, amount, victim, xpSource);
+        TRIGGER_PLAYER_HOOK(ON_GIVE_EXP, player, amount, victim, xpSource);
     }
 
     void OnPlayerLevelChanged(Player* player, uint8 oldLevel) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_LEVEL_CHANGED, 0, player, oldLevel);
+        TRIGGER_PLAYER_HOOK(ON_LEVEL_CHANGED, player, oldLevel);
     }
 
     void OnPlayerMoneyChanged(Player* player, int32& amount) override
     {
-        sPythonEngine->Trigger(PythonHook::PLAYER_MONEY_CHANGED, 0, player, amount);
+        TRIGGER_PLAYER_HOOK(ON_MONEY_CHANGED, player, amount);
     }
 };
 

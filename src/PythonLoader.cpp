@@ -13,20 +13,26 @@ class PythonLoader : public WorldScript
 public:
     PythonLoader() : WorldScript("PythonLoader") {}
 
-    void OnStartup() override
+    void OnBeforeConfigLoad(bool reload) override
     {
-        // Initialize the Engine (creates the Python VM, registers bindings) and
-        // immediately load all scripts from ScriptsPath
-        // @todo Check if OnBeforeConfigLoad is better to init engine
-        sPythonEngine->Initialize();
+        if (!reload)
+        {
+            // Initialize the Engine (creates the Python VM, registers bindings)
+            // @todo create separate method for reload
+            sPythonEngine->Initialize();
+        }
+    }
+
+    void OnBeforeWorldInitialized() override
+    {
+        // Immediately load all scripts from Python.ScriptsPath
         sPythonEngine->LoadScripts();
     }
 
-    void OnShutdown() override
+    void OnAfterUnloadAllMaps() override
     {
         // Ensure the Python engine is turned off safely, preventing memory
         // leaks or hanging processes
-        // @todo Check if OnAfterUnloadAllMaps is better to shutdown engine
         sPythonEngine->Shutdown();
     }
 };
