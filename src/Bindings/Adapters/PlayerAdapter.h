@@ -46,24 +46,38 @@ namespace PythonPlayerAdapter
         }
     }
 
-    inline void AddItem(Player* player, uint32 itemId, uint32 count)
-    {
-        if (player)
-            player->AddItem(itemId, count);
-    }
-
-    inline void RemoveItem(Player* player, uint32 item, uint32 count)
-    {
-        if (player)
-            player->DestroyItemCount(item, count, true, false);
-    }
-
     inline bool HasItem(Player* player, uint32 item, uint32 count)
     {
         if (!player)
             return false;
 
         return player->HasItemCount(item, count);
+    }
+
+    inline void AddItem(Player* player, uint32 itemId, uint32 count)
+    {
+        if (player)
+            player->AddItem(itemId, count);
+    }
+
+    inline void DestroyItem(Player* player, uint32 item, uint32 count)
+    {
+        if (player)
+            player->DestroyItemCount(item, count, true, false);
+    }
+
+    inline void RemoveItem(Player* player, uint8 bag, uint8 slot)
+    {
+        if (player)
+            player->RemoveItem(bag, slot, true);
+    }
+
+    inline bool ModifyMoney(Player* player, int32 amount)
+    {
+        if (!player)
+            return false;
+
+        return player->ModifyMoney(amount);
     }
 
     inline bool TeleportTo(Player* player, uint32 mapid, float x, float y, float z, float o)
