@@ -3,10 +3,12 @@
 // Forward declarations
 void export_hook_api();
 void export_game_constants();
+void export_objectguid_class();
 void export_unit_class();
-void export_creature_class();
 void export_player_class();
+void export_creature_class();
 void export_gameobject_class();
+void export_item_template_struct();
 void export_item_class();
 
 // Register module name with Python before Py_Initialize()
@@ -36,9 +38,11 @@ BOOST_PYTHON_MODULE(azerothcore)
     export_game_constants();
 
     // Register all game classes (Unit, Player, Creature, etc.)
+    export_objectguid_class();
     export_unit_class();
-    export_creature_class();
     export_player_class();
+    export_creature_class();
     export_gameobject_class();
+    export_item_template_struct();
     export_item_class();
 }
