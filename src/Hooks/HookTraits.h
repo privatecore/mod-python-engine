@@ -38,11 +38,11 @@ namespace Hooks
         }
     }
 
-    DEFINE_HOOK_TRAIT(AccountHook,    ACCOUNT);
-    DEFINE_HOOK_TRAIT(PlayerHook,     PLAYER);
-    DEFINE_HOOK_TRAIT(CreatureHook,   CREATURE);
-    DEFINE_HOOK_TRAIT(GameObjectHook, GAMEOBJECT);
-    DEFINE_HOOK_TRAIT(ItemHook,       ITEM);
+    DEFINE_HOOK_TRAIT(AccountHook,      ACCOUNT);
+    DEFINE_HOOK_TRAIT(PlayerHook,       PLAYER);
+    DEFINE_HOOK_TRAIT(CreatureHook,     CREATURE);
+    DEFINE_HOOK_TRAIT(GameObjectHook,   GAMEOBJECT);
+    DEFINE_HOOK_TRAIT(ItemHook,         ITEM);
 
     // Validation helper
     template<typename T, typename = void> struct IsValidHook : std::false_type {};

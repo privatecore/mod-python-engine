@@ -12,7 +12,10 @@ struct HookInfo
     Hooks::Category category;
     uint32 value;
 
-    constexpr bool operator==(const HookInfo& other) const { return category == other.category && value == other.value; }
+    constexpr bool operator==(const HookInfo& other) const
+    {
+        return category == other.category && value == other.value;
+    }
     constexpr bool operator!=(const HookInfo& other) const { return !(*this == other); }
 };
 
