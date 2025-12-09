@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 
-namespace PythonGameObjectAdapter
+namespace PyEng::GameObjectAdapter
 {
     inline uint32 GetGUIDLow(GameObject* go)
     {
@@ -22,6 +22,6 @@ namespace PythonGameObjectAdapter
             go->Use(unit);
     }
 
-} // namespace PythonGameObjectAdapter
+} // namespace PyEng::GameObjectAdapter
 
 #endif // MOD_PYTHON_ENGINE_GAMEOBJECT_ADAPTER_H

@@ -3,10 +3,10 @@
 
 #include "Item.h"
 
-namespace PythonItemAdapter
+namespace PyEng::ItemAdapter
 {
     // @todo
 
-} // namespace PythonItemAdapter
+} // namespace PyEng::ItemAdapter
 
 #endif // MOD_PYTHON_ENGINE_ITEM_ADAPTER_H

@@ -3,7 +3,7 @@
 
 #include "Creature.h"
 
-namespace PythonCreatureAdapter
+namespace PyEng::CreatureAdapter
 {
     inline uint32 GetGUIDLow(Creature* creature)
     {
@@ -22,7 +22,7 @@ namespace PythonCreatureAdapter
             creature->Say(text, static_cast<Language>(language));
     }
 
-    static void Yell(Creature* creature, const std::string& text, uint32 language)
+    inline void Yell(Creature* creature, const std::string& text, uint32 language)
     {
         if (creature)
             creature->Yell(text, static_cast<Language>(language));
@@ -34,6 +34,6 @@ namespace PythonCreatureAdapter
             creature->SetHomePosition(x, y, z, o);
     }
 
-} // namespace PythonCreatureAdapter
+} // namespace PyEng::CreatureAdapter
 
 #endif // MOD_PYTHON_ENGINE_CREATURE_ADAPTER_H

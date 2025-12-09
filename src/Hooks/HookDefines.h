@@ -3,14 +3,14 @@
 
 #include "Define.h"
 
-namespace Hooks
+namespace PyEng::Hooks
 {
     /**
      * @brief Hook Type Categories
      */
     enum class Category : uint8
     {
-        ACCOUNT = 1,
+        ACCOUNT,
         PLAYER,
         CREATURE,
         GAMEOBJECT,
@@ -22,7 +22,7 @@ namespace Hooks
      */
     enum class AccountHook : uint32
     {
-        ON_ACCOUNT_LOGIN = 1,
+        ON_ACCOUNT_LOGIN,
         ON_BEFORE_ACCOUNT_DELETE,
         ON_LAST_IP_UPDATE,
         ON_FAILED_ACCOUNT_LOGIN,
@@ -35,7 +35,7 @@ namespace Hooks
 
     enum class PlayerHook : uint32
     {
-        ON_PLAYER_JUST_DIED = 1,
+        ON_PLAYER_JUST_DIED,
         ON_CALCULATE_TALENTS_POINTS,
         ON_PLAYER_RELEASED_GHOST,
         ON_SEND_INITIAL_PACKETS_BEFORE_ADD_TO_MAP,
@@ -217,7 +217,7 @@ namespace Hooks
 
     enum class CreatureHook : uint32
     {
-        ON_GOSSIP_HELLO = 1,
+        ON_GOSSIP_HELLO,
         ON_GOSSIP_SELECT,
         ON_GOSSIP_SELECT_CODE,
         ON_QUEST_ACCEPT,
@@ -230,7 +230,7 @@ namespace Hooks
 
     enum class GameObjectHook : uint32
     {
-        ON_GOSSIP_HELLO = 1,
+        ON_GOSSIP_HELLO,
         ON_GOSSIP_SELECT,
         ON_GOSSIP_SELECT_CODE,
         ON_QUEST_ACCEPT,
@@ -246,7 +246,7 @@ namespace Hooks
 
     enum class ItemHook : uint32
     {
-        ON_QUEST_ACCEPT = 1,
+        ON_QUEST_ACCEPT,
         ON_USE,
         ON_EXPIRE,
         ON_REMOVE,

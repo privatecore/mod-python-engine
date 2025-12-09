@@ -1,12 +1,17 @@
+#include "AutoRegistryMgr.h"
 #include "PythonEngine.h"
 #include "ScriptMgr.h"
 
-// Forward declarations
-void AddPythonAccountScripts();
-void AddPythonCommandScripts();
-void AddPythonCreatureScripts();
-void AddPythonGameObjectScripts();
-void AddPythonPlayerScripts();
+// Create Scripts scope for the forwards
+CREATE_REGISTRY_SCOPE(Scripts);
+
+// Forward declarations into the Scripts scope
+REGISTER_TO_SCOPE(Scripts, AddPythonAccountScripts);
+REGISTER_TO_SCOPE(Scripts, AddPythonCommandScripts);
+REGISTER_TO_SCOPE(Scripts, AddPythonCreatureScripts);
+REGISTER_TO_SCOPE(Scripts, AddPythonGameObjectScripts);
+REGISTER_TO_SCOPE(Scripts, AddPythonItemScripts);
+REGISTER_TO_SCOPE(Scripts, AddPythonPlayerScripts);
 
 class PythonLoader : public WorldScript
 {
@@ -18,7 +23,7 @@ public:
         if (!reload)
         {
             // Initialize the Engine (creates the Python VM, registers bindings)
-            // @todo create separate method for reload
+            // @todo create separate method for reload(?)
             sPythonEngine->Initialize();
         }
     }
@@ -41,9 +46,5 @@ void Addmod_python_engineScripts()
 {
     new PythonLoader();
 
-    AddPythonAccountScripts();
-    AddPythonCommandScripts();
-    AddPythonCreatureScripts();
-    AddPythonGameObjectScripts();
-    AddPythonPlayerScripts();
+    EXECUTE_REGISTRY_SCOPE(Scripts);
 }

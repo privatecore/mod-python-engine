@@ -1,21 +1,22 @@
-#include "PythonEngine.h"
+#include "AutoRegistryMgr.h"
+#include "PythonHeaders.h"
 
-// Forward declarations
-void export_hook_api();
-void export_game_constants();
-void export_objectguid_class();
-void export_unit_class();
-void export_player_class();
-void export_creature_class();
-void export_gameobject_class();
-void export_item_template_struct();
-void export_item_class();
+// Create Exports scope for the forwards
+CREATE_REGISTRY_SCOPE(Exports);
+
+// Forward declarations into the Exports scope
+REGISTER_TO_SCOPE(Exports, export_unit_class, 20);
+REGISTER_TO_SCOPE(Exports, export_worldobject_class, 10);
+REGISTER_TO_SCOPE(Exports, export_player_class, 21);
+REGISTER_TO_SCOPE(Exports, export_game_constants, 1);
+REGISTER_TO_SCOPE(Exports, export_hook_api, 0);
+REGISTER_TO_SCOPE(Exports, export_object_class, 5);
 
 // Register module name with Python before Py_Initialize()
 extern "C" PyObject* PyInit_azerothcore();
 
 /**
- * @brief Registers the C++ azerothcore module into Python's internal table of built-in
+ * @brief Registers the C++ azerothcore module into Python's internal table of
  * modules before the interpreter starts. This allows Python scripts to import
  * and use C++ functionality via import azerothcore.
  */
@@ -31,18 +32,5 @@ void InitAzerothCoreModule()
  */
 BOOST_PYTHON_MODULE(azerothcore)
 {
-    // Register the Register() function for hook registration
-    export_hook_api();
-
-    // Register all game constants (races, classes, powers, etc.)
-    export_game_constants();
-
-    // Register all game classes (Unit, Player, Creature, etc.)
-    export_objectguid_class();
-    export_unit_class();
-    export_player_class();
-    export_creature_class();
-    export_gameobject_class();
-    export_item_template_struct();
-    export_item_class();
+    EXECUTE_REGISTRY_SCOPE(Exports);
 }

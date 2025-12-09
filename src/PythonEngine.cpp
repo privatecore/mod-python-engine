@@ -1,4 +1,5 @@
 #include "PythonEngine.h"
+#include "HookRegistry.h"
 #include "Config.h"
 #include "Log.h"
 #include "Timer.h"
@@ -163,6 +164,8 @@ void PythonEngine::RegisterHook(const std::string& eventName, PythonAPI::Object 
                                    eventName, entryId);
         return;
     }
+
+    using PyEng::Hooks::GetHookByName;
 
     auto hookIdOpt = GetHookByName(eventName);
     if (!hookIdOpt.has_value())

@@ -22,6 +22,13 @@ public:
         return commandTable;
     }
 
+    /**
+     * @brief Reloads all Python scripts through the Python engine and sends
+     * system message that the reload has been performed.
+     *
+     * @param handler Pointer to the chat handler
+     * @param args Unused command arguments
+     */
     static bool HandleReloadPythonScripts(ChatHandler* handler, const char* /*args*/)
     {
         sPythonEngine->ReloadScripts();

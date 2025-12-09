@@ -1,9 +1,8 @@
-// PythonEngine.h
-#ifndef MOD_PYTHON_ENGINE_ENGINE_H
-#define MOD_PYTHON_ENGINE_ENGINE_H
+#ifndef MOD_PYTHON_ENGINE_H
+#define MOD_PYTHON_ENGINE_H
 
 #include "PythonAPI.h"
-#include "HookRegistry.h"
+#include "HookInfo.h"
 #include "Define.h"
 #include <atomic>
 #include <shared_mutex>
@@ -14,6 +13,8 @@
 
 // Forward declaration
 void InitAzerothCoreModule();
+
+using HookInfo = PyEng::Hooks::HookInfo;
 
 class PythonEngine
 {
@@ -66,6 +67,8 @@ public:
             TriggerCallbacks(itr->second, entryId, argsTuple); // entry-specific hooks
     }
 
+    static void TriggerHook(PyEng::Hooks::HookInfo* hinfo, uint32 entryId);
+
 private:
     PythonEngine() = default;
     ~PythonEngine();
@@ -105,7 +108,7 @@ private:
      *
      * @param hook Hook identifier to check
      * @param entryId Specific entry ID (creature/item/spell/etc., 0 for global)
-     * @return true if callbacks registered, false otherwise
+     * @return True if callbacks registered, false otherwise
      */
     [[nodiscard]] bool HasBindingsFor(HookInfo hinfo, uint32 entryId = 0) const noexcept
     {
@@ -161,6 +164,7 @@ private:
     PythonAPI::Object main_namespace;
 };
 
+extern PythonEngine* sPythonEngine;
 #define sPythonEngine PythonEngine::instance()
 
-#endif // MOD_PYTHON_ENGINE_ENGINE_H
+#endif // MOD_PYTHON_ENGINE_H

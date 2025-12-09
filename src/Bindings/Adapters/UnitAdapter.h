@@ -3,13 +3,13 @@
 
 #include "Unit.h"
 
-namespace PythonUnitAdapter
+namespace PyEng::UnitAdapter
 {
     inline uint32 GetGUIDLow(Unit* unit)
     {
         return unit ? unit->GetGUID().GetCounter() : 0;
     }
 
-} // namespace PythonUnitAdapter
+} // namespace PyEng::UnitAdapter
 
 #endif // MOD_PYTHON_ENGINE_UNIT_ADAPTER_H
