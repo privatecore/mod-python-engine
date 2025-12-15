@@ -10,254 +10,40 @@
 namespace PyEng::Hooks
 {
     /**
-     * @brief Internal macro to build entries for the hook name
+     * @brief String-to-HookInfo lookup table (auto-populated at static init)
+     *
+     * This map is filled during static initialization by DEFINE_GAME_HOOK macros.
+     * Each DEFINE_GAME_HOOK creates a constant and registers its string name here.
+     *
+     * Example after initialization:
+     *   "PLAYER_ON_LOGIN"          -> HookInfo{Category::PLAYER, 32}
+     *   "PLAYER_ON_LOGOUT"         -> HookInfo{Category::PLAYER, 34}
+     *   "CREATURE_ON_GOSSIP_HELLO" -> HookInfo{Category::CREATURE, 0}
      */
-    #define REGISTER_GAME_HOOK(HookEnum, HookName) \
-        { std::string(HookTrait<HookEnum>::categoryName) + "_" #HookName, \
-          MakeHookInfo(HookEnum::HookName) }
-
-    /**
-     * @brief Get static hook registry map
-     */
-    inline std::unordered_map<std::string, HookInfo> const& GetHookMap()
+    inline std::unordered_map<std::string, HookInfo>& GetHookMap()
     {
-        static const std::unordered_map<std::string, HookInfo> s_hookMap = {
-          // Account hooks
-            REGISTER_GAME_HOOK(AccountHook, ON_ACCOUNT_LOGIN),
-            REGISTER_GAME_HOOK(AccountHook, ON_BEFORE_ACCOUNT_DELETE),
-            REGISTER_GAME_HOOK(AccountHook, ON_LAST_IP_UPDATE),
-            REGISTER_GAME_HOOK(AccountHook, ON_FAILED_ACCOUNT_LOGIN),
-            REGISTER_GAME_HOOK(AccountHook, ON_EMAIL_CHANGE),
-            REGISTER_GAME_HOOK(AccountHook, ON_FAILED_EMAIL_CHANGE),
-            REGISTER_GAME_HOOK(AccountHook, ON_PASSWORD_CHANGE),
-            REGISTER_GAME_HOOK(AccountHook, ON_FAILED_PASSWORD_CHANGE),
-            REGISTER_GAME_HOOK(AccountHook, CAN_ACCOUNT_CREATE_CHARACTER),
-
-            // Player hooks
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_JUST_DIED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CALCULATE_TALENTS_POINTS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_RELEASED_GHOST),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SEND_INITIAL_PACKETS_BEFORE_ADD_TO_MAP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BATTLEGROUND_DESERTION),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_COMPLETE_QUEST),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PVP_KILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_PVP_FLAG_CHANGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CREATURE_KILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CREATURE_KILLED_BY_PET),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_KILLED_BY_CREATURE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LEVEL_CHANGED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_FREE_TALENT_POINTS_CHANGED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_TALENTS_RESET),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_SPEC_SLOT_CHANGED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_UPDATE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_MONEY_CHANGED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_LOOT_MONEY),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GIVE_EXP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_REPUTATION_CHANGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_REPUTATION_RANK_CHANGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LEARN_SPELL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_FORGOT_SPELL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_DUEL_REQUEST),
-            REGISTER_GAME_HOOK(PlayerHook, ON_DUEL_START),
-            REGISTER_GAME_HOOK(PlayerHook, ON_DUEL_END),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_SEND_CHAT_MESSAGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_EMOTE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_TEXT_EMOTE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SPELL_CAST),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LOAD_FROM_DB),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LOGIN),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_LOGOUT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LOGOUT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CREATE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_DELETE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_FAILED_DELETE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SAVE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BIND_TO_INSTANCE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_ZONE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_AREA),
-            REGISTER_GAME_HOOK(PlayerHook, ON_MAP_CHANGED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_TELEPORT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_FACTION),
-            REGISTER_GAME_HOOK(PlayerHook, ON_ADD_TO_BATTLEGROUND),
-            REGISTER_GAME_HOOK(PlayerHook, ON_QUEUE_RANDOM_DUNGEON),
-            REGISTER_GAME_HOOK(PlayerHook, ON_REMOVE_FROM_BATTLEGROUND),
-            REGISTER_GAME_HOOK(PlayerHook, ON_ACHI_COMPLETE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_ACHI_COMPLETE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CRITERIA_PROGRESS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_CRITERIA_PROGRESS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_ACHI_SAVE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CRITERIA_SAVE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GOSSIP_SELECT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GOSSIP_SELECT_CODE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEING_CHARMED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_SET_VISIBLE_ITEM_SLOT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_MOVE_ITEM_FROM_INVENTORY),
-            REGISTER_GAME_HOOK(PlayerHook, ON_EQUIP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_JOIN_BG),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_JOIN_ARENA),
-            REGISTER_GAME_HOOK(PlayerHook, GET_CUSTOM_GET_ARENA_TEAM_ID),
-            REGISTER_GAME_HOOK(PlayerHook, GET_CUSTOM_ARENA_PERSONAL_RATING),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_MAX_PERSONAL_ARENA_RATING_REQUIREMENT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_LOOT_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_FILL_QUEST_LOOT_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_STORE_NEW_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CREATE_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_QUEST_REWARD_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLACE_AUCTION_BID),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GROUP_ROLL_REWARD_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_OPEN_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_QUEST_COMPLETE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_QUEST_COMPUTE_EXP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_DURABILITY_REPAIR),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_BUY_ITEM_FROM_VENDOR),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_STORE_OR_EQUIP_NEW_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_STORE_OR_EQUIP_NEW_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_UPDATE_MAX_POWER),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_UPDATE_MAX_HEALTH),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_UPDATE_ATTACK_POWER_AND_DAMAGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_UPDATE_ATTACK_POWER_AND_DAMAGE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_INIT_TALENT_FOR_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_FIRST_LOGIN),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SET_MAX_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_JOIN_IN_BATTLEGROUND_QUEUE),
-            REGISTER_GAME_HOOK(PlayerHook, SHOULD_BE_REWARDED_WITH_MONEY_INSTEAD_OF_EXP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_TEMP_SUMMON_INIT_STATS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_GUARDIAN_INIT_STATS_FOR_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_GUARDIAN_INIT_STATS_FOR_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_LOAD_PET_FROM_DB),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_JOIN_IN_ARENA_QUEUE),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_BATTLEFIELD_PORT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_GROUP_INVITE),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_GROUP_ACCEPT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_SELL_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_SEND_MAIL),
-            REGISTER_GAME_HOOK(PlayerHook, PETITION_BUY),
-            REGISTER_GAME_HOOK(PlayerHook, PETITION_SHOW_LIST),
-            REGISTER_GAME_HOOK(PlayerHook, ON_REWARD_KILL_REWARDER),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_GIVE_MAIL_REWARD_AT_GIVE_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_DELETE_FROM_DB),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_REPOP_AT_GRAVEYARD),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_IS_CLASS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_MAX_SKILL_VALUE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_HAS_ACTIVE_POWER_TYPE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_GATHERING_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_CRAFTING_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_FISHING_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_AREA_EXPLORE_AND_OUTDOOR),
-            REGISTER_GAME_HOOK(PlayerHook, ON_VICTIM_REWARD_BEFORE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_VICTIM_REWARD_AFTER),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CUSTOM_SCALING_STAT_VALUE_BEFORE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CUSTOM_SCALING_STAT_VALUE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_APPLY_ITEM_MODS_BEFORE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_APPLY_ENCHANTMENT_ITEM_MODS_BEFORE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_APPLY_WEAPON_DAMAGE),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_ARMOR_DAMAGE_MODIFIER),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_FERAL_AP_BONUS),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_APPLY_WEAPON_DEPENDENT_AURA_DAMAGE_MOD),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_APPLY_EQUIP_SPELL),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_APPLY_EQUIP_SPELLS_ITEM_SET),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_CAST_ITEM_COMBAT_SPELL),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_CAST_ITEM_USE_SPELL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_APPLY_AMMO_BONUSES),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_EQUIP_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_UNEQUIP_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_USE_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_SAVE_EQUIP_NEW_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_APPLY_ENCHANTMENT),
-            REGISTER_GAME_HOOK(PlayerHook, PASSED_QUEST_KILLED_MONSTER_CREDIT),
-            REGISTER_GAME_HOOK(PlayerHook, CHECK_ITEM_IN_SLOT_AT_LOAD_INVENTORY),
-            REGISTER_GAME_HOOK(PlayerHook, NOT_AVOID_SATISFY),
-            REGISTER_GAME_HOOK(PlayerHook, NOT_VISIBLE_GLOBALLY_FOR),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_ARENA_PERSONAL_RATING),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_ARENA_TEAM_ID),
-            REGISTER_GAME_HOOK(PlayerHook, ON_IS_FFA_PVP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_FFA_PVP_STATE_UPDATE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_IS_PVP),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_MAX_SKILL_VALUE_FOR_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, NOT_SET_ARENA_TEAM_INFO_FIELD),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_JOIN_LFG),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_ENTER_MAP),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_INIT_TRADE),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_SET_TRADE_ITEM),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SET_SERVER_SIDE_VISIBILITY),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SET_SERVER_SIDE_VISIBILITY_DETECT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_RESURRECT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_CHOOSE_GRAVEYARD),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLAYER_USE_CHAT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLAYER_USE_PRIVATE_CHAT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLAYER_USE_GROUP_CHAT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLAYER_USE_GUILD_CHAT),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_PLAYER_USE_CHANNEL_CHAT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_LEARN_TALENTS),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_ENTER_COMBAT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_PLAYER_LEAVE_COMBAT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_QUEST_ABANDON),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GET_QUEST_RATE),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CAN_PLAYER_FLY_IN_ZONE),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_SET_CAN_FLY_BY_SERVER),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_SET_UNDER_ACK_MOUNT),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_SET_ROOT_ACK_UPD),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_SET_JUMPING_BY_OPCODE),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_UPDATE_MOVEMENT_INFO),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_HANDLE_DOUBLE_JUMP),
-            REGISTER_GAME_HOOK(PlayerHook, ANTICHEAT_CHECK_MOVEMENT_INFO),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_SEND_ERROR_ALREADY_LOOTED),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_CREATURE_LOOT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_AFTER_CREATURE_LOOT_MONEY),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CAN_UPDATE_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_BEFORE_UPDATE_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_UPDATE_SKILL),
-            REGISTER_GAME_HOOK(PlayerHook, CAN_RESURRECT),
-            REGISTER_GAME_HOOK(PlayerHook, ON_CAN_GIVE_LEVEL),
-            REGISTER_GAME_HOOK(PlayerHook, ON_SEND_LIST_INVENTORY),
-            REGISTER_GAME_HOOK(PlayerHook, ON_GIVE_REPUTATION),
-
-            // Creature hooks
-            REGISTER_GAME_HOOK(CreatureHook, ON_GOSSIP_HELLO),
-            REGISTER_GAME_HOOK(CreatureHook, ON_GOSSIP_SELECT),
-            REGISTER_GAME_HOOK(CreatureHook, ON_GOSSIP_SELECT_CODE),
-            REGISTER_GAME_HOOK(CreatureHook, ON_QUEST_ACCEPT),
-            REGISTER_GAME_HOOK(CreatureHook, ON_QUEST_SELECT),
-            REGISTER_GAME_HOOK(CreatureHook, ON_QUEST_COMPLETE),
-            REGISTER_GAME_HOOK(CreatureHook, ON_QUEST_REWARD),
-            REGISTER_GAME_HOOK(CreatureHook, ON_ADD_WORLD),
-            REGISTER_GAME_HOOK(CreatureHook, ON_REMOVE_WORLD),
-
-            // GameObject hooks
-            REGISTER_GAME_HOOK(GameObjectHook, ON_GOSSIP_HELLO),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_GOSSIP_SELECT),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_GOSSIP_SELECT_CODE),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_QUEST_ACCEPT),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_QUEST_REWARD),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_DESTROYED),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_DAMAGED),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_MODIFY_HEALTH),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_LOOT_STATE_CHANGED),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_UPDATE),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_ADD_WORLD),
-            REGISTER_GAME_HOOK(GameObjectHook, ON_REMOVE_WORLD),
-
-            // Item hooks
-            REGISTER_GAME_HOOK(ItemHook, ON_QUEST_ACCEPT),
-            REGISTER_GAME_HOOK(ItemHook, ON_USE),
-            REGISTER_GAME_HOOK(ItemHook, ON_EXPIRE),
-            REGISTER_GAME_HOOK(ItemHook, ON_REMOVE),
-            REGISTER_GAME_HOOK(ItemHook, ON_CAST_COMBAT_SPELL),
-            REGISTER_GAME_HOOK(ItemHook, ON_GOSSIPE_SELECT),
-            REGISTER_GAME_HOOK(ItemHook, ON_GOSSIPE_SELECT_CODE),
-
-            // ...
-        };
-
-        return s_hookMap;
+        static std::unordered_map<std::string, HookInfo> hookMap;
+        return hookMap;
     }
 
     /**
-     * @brief Resolves a string event name to its corresponding hook enum value
+     * @brief Internal registration helper called by DEFINE_GAME_HOOK macro
      *
-     * @param name Name of the event (for ex., "PLAYER_ON_LOGIN")
-     * @return Hook identifier if found, otherwise std::nullopt
+     * @param name String identifier for the hook (ex., "PLAYER_ON_LOGIN")
+     * @param info Hook identifier structure
+     * @return Always returns true (used for static initialization)
+     */
+    inline bool RegisterHookInternal(const char* name, HookInfo info)
+    {
+        GetHookMap()[name] = info;
+        return true;
+    }
+
+    /**
+     * @brief Resolves a string hook name to its corresponding HookInfo
+     *
+     * @param name String identifier for the hook (ex., "PLAYER_ON_LOGIN")
+     * @return HookInfo if found, otherwise std::nullopt
      */
     inline std::optional<HookInfo> GetHookByName(std::string_view name)
     {
@@ -266,8 +52,19 @@ namespace PyEng::Hooks
         return itr != hookMap.end() ? std::optional{itr->second} : std::nullopt;
     }
 
-    #undef REGISTER_GAME_HOOK
-
 } // namespace PyEng::Hooks
+
+/**
+ * @brief Macro to define a hook constant and auto-register its string mapping
+ *
+ * This macro does two things:
+ * 1. Creates a constexpr HookInfo constant with the given name
+ * 2. Registers the hook name WITH CATEGORY PREFIX in the string lookup map
+ *
+ * Usage: DEFINE_GAME_HOOK(PLAYER, ON_LOGIN, 32)
+ */
+#define DEFINE_GAME_HOOK(CategoryName, HookName, Id) \
+    inline constexpr HookInfo HookName = {Category::CategoryName, Id}; \
+    inline bool HookName##_registered = PyEng::Hooks::RegisterHookInternal(#CategoryName "_" #HookName, HookName);
 
 #endif // MOD_PYTHON_ENGINE_HOOK_REGISTRY_H

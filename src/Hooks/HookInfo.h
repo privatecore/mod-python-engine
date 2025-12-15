@@ -1,43 +1,45 @@
 #ifndef MOD_PYTHON_ENGINE_HOOK_INFO_H
 #define MOD_PYTHON_ENGINE_HOOK_INFO_H
 
-#include "HookTraits.h"
-#include <cstddef>
+#include "Define.h"
 #include <cstdint>
 #include <functional>
 
 namespace PyEng::Hooks
 {
     /**
+     * @brief Hook Type Categories
+     */
+    enum class Category : uint8
+    {
+        ACCOUNT,
+        PLAYER,
+        CREATURE,
+        GAMEOBJECT,
+        ITEM,
+        ACHIEVEMENT,
+        SERVER,
+        UNIT,
+        WORLD,
+    };
+
+    /**
      * @brief Type-safe hook identifier
      */
     struct HookInfo
     {
         Category category;
-        uint32 value;
+        uint8 value;
 
         constexpr bool operator==(HookInfo const& other) const noexcept
         {
             return category == other.category && value == other.value;
         }
-        constexpr bool operator!=(HookInfo const& other) const noexcept { return !(*this == other); }
+        constexpr bool operator!=(HookInfo const& other) const noexcept
+        {
+            return !(*this == other);
+        }
     };
-
-    /**
-     * @brief Type-safe factory function for creating HookInfo identifiers
-     *
-     * @param henum Specific hook enum value (for ex., PlayerHook::ON_LOGIN)
-     * @return Hook identifier containing the category and value
-     */
-    template<typename HookEnum>
-    inline constexpr HookInfo MakeHookInfo(HookEnum henum)
-    {
-        // compile-time validation
-        static_assert(std::is_enum_v<HookEnum>, "MakeHookInfo requires an enum type");
-        static_assert(IsValidHookV<HookEnum>, "Unknown hook enum type - did you add it with DEFINE_HOOK_TRAIT?");
-
-        return HookInfo{HookTrait<HookEnum>::category, static_cast<uint32>(henum)};
-    }
 
 } // namespace PyEng::Hooks
 

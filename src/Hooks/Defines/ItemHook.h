@@ -1,0 +1,21 @@
+#ifndef MOD_PYTHON_ENGINE_ITEM_HOOK_H
+#define MOD_PYTHON_ENGINE_ITEM_HOOK_H
+
+#include "HookRegistry.h"
+
+namespace PyEng::Hooks
+{
+    namespace Item
+    {
+        DEFINE_GAME_HOOK(ITEM, ON_QUEST_ACCEPT, 0)
+        DEFINE_GAME_HOOK(ITEM, ON_USE, 1)
+        DEFINE_GAME_HOOK(ITEM, ON_EXPIRE, 2)
+        DEFINE_GAME_HOOK(ITEM, ON_REMOVE, 3)
+        DEFINE_GAME_HOOK(ITEM, ON_CAST_COMBAT_SPELL, 4)
+        DEFINE_GAME_HOOK(ITEM, ON_GOSSIPE_SELECT, 5)
+        DEFINE_GAME_HOOK(ITEM, ON_GOSSIPE_SELECT_CODE, 6)
+    }
+
+} // namespace PyEng::Hooks
+
+#endif // MOD_PYTHON_ENGINE_ITEM_HOOK_H
