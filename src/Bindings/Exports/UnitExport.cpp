@@ -1,5 +1,5 @@
 #include "PythonHeaders.h"
-#include "UnitAdapter.h"
+#include "Adapters/UnitAdapter.h"
 
 namespace bp = boost::python;
 

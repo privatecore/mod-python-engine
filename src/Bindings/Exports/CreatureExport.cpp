@@ -1,5 +1,5 @@
 #include "PythonHeaders.h"
-#include "CreatureAdapter.h"
+#include "Adapters/CreatureAdapter.h"
 
 namespace bp = boost::python;
 

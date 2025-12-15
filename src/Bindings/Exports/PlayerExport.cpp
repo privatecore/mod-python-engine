@@ -1,5 +1,5 @@
 #include "PythonHeaders.h"
-#include "PlayerAdapter.h"
+#include "Adapters/PlayerAdapter.h"
 #include "Player.h"
 
 namespace bp = boost::python;

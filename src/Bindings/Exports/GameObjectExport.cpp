@@ -1,5 +1,5 @@
 #include "PythonHeaders.h"
-#include "GameObjectAdapter.h"
+#include "Adapters/GameObjectAdapter.h"
 
 namespace bp = boost::python;
 
