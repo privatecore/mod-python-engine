@@ -15,10 +15,7 @@ target_link_libraries(modules PUBLIC
 target_include_directories(modules PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/src
   ${CMAKE_CURRENT_LIST_DIR}/src/Bindings
-  ${CMAKE_CURRENT_LIST_DIR}/src/Bindings/Adapters
-  ${CMAKE_CURRENT_LIST_DIR}/src/Bindings/Constants
-  ${CMAKE_CURRENT_LIST_DIR}/src/Bindings/Exports
-  ${CMAKE_CURRENT_LIST_DIR}/src/Bindings/Functions
+  ${CMAKE_CURRENT_LIST_DIR}/src/Bridge
   ${CMAKE_CURRENT_LIST_DIR}/src/Hooks
   ${CMAKE_CURRENT_LIST_DIR}/src/Scripts
   ${Python3_INCLUDE_DIRS}
