@@ -14,6 +14,9 @@
 #define TRIGGER_PLAYER_HOOK(Hook, ...) \
     sPythonEngine->Trigger(PyEng::Hooks::Player::Hook, 0, ##__VA_ARGS__)
 
+#define TRIGGER_UNIT_HOOK(Hook, ...) \
+    sPythonEngine->Trigger(PyEng::Hooks::Unit::Hook, 0, ##__VA_ARGS__)
+
 #define TRIGGER_CREATURE_HOOK(Hook, Entry, ...) \
     sPythonEngine->Trigger(PyEng::Hooks::Creature::Hook, Entry, ##__VA_ARGS__)
 

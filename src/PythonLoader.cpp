@@ -12,6 +12,7 @@ REGISTER_TO_SCOPE(Scripts, AddSC_PythonCreatureScripts);
 REGISTER_TO_SCOPE(Scripts, AddSC_PythonGameObjectScripts);
 REGISTER_TO_SCOPE(Scripts, AddSC_PythonItemScripts);
 REGISTER_TO_SCOPE(Scripts, AddSC_PythonPlayerScripts);
+REGISTER_TO_SCOPE(Scripts, AddSC_PythonUnitScripts);
 
 class PythonLoader : public WorldScript
 {
