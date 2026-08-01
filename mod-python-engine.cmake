@@ -3,7 +3,7 @@ message(STATUS "Configuring mod-python-engine...")
 # Dependencies
 find_package(Python3 3.10 COMPONENTS Interpreter Development REQUIRED)
 set(BOOST_PYTHON_COMPONENT "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
-find_package(Boost REQUIRED COMPONENTS ${BOOST_PYTHON_COMPONENT})
+find_package(Boost CONFIG REQUIRED COMPONENTS ${BOOST_PYTHON_COMPONENT})
 
 # Create an interface library for Python/Boost
 add_library(pyeng-interface INTERFACE)
