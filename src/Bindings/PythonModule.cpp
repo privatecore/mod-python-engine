@@ -7,6 +7,7 @@ CREATE_REGISTRY_SCOPE(Exports);
 // Forward declarations into the Exports scope
 // base
 REGISTER_TO_SCOPE(Exports, export_hook_api, 0);
+REGISTER_TO_SCOPE(Exports, export_mutable_types, 0);
 REGISTER_TO_SCOPE(Exports, export_game_constants, 1);
 // object
 REGISTER_TO_SCOPE(Exports, export_objectguid_class, 5);
