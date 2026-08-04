@@ -48,7 +48,7 @@ public:
      */
     void OnPlayerGiveXP(Player* player, uint32& amount, Unit* victim, uint8 xpSource) override
     {
-        TRIGGER_PLAYER_HOOK(ON_GIVE_EXP, player, amount, victim, xpSource);
+        TRIGGER_PLAYER_HOOK(ON_GIVE_EXP, player, std::ref(amount), victim, xpSource);
     }
 
     /**
@@ -70,7 +70,7 @@ public:
      */
     void OnPlayerMoneyChanged(Player* player, int32& amount) override
     {
-        TRIGGER_PLAYER_HOOK(ON_MONEY_CHANGED, player, amount);
+        TRIGGER_PLAYER_HOOK(ON_MONEY_CHANGED, player, std::ref(amount));
     }
 
     /**
