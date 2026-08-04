@@ -13,14 +13,29 @@ namespace PyEng::Hooks
     enum class Category : uint8
     {
         ACCOUNT,
-        PLAYER,
-        CREATURE,
-        GAMEOBJECT,
-        ITEM,
         ACHIEVEMENT,
+        ARENA,
+        ARENATEAM,
+        BATTLEFIELD,
+        CREATURE,
+        DATABASE,
+        FORMULA,
+        GAMEEVENT,
+        GAMEOBJECT,
+        GLOBAL,
+        GROUP,
+        GUILD,
+        ITEM,
+        MISC,
+        PET,
+        PLAYER,
         SERVER,
+        TICKET,
+        TRANSPORT,
         UNIT,
+        VEHICLE,
         WORLD,
+        WORLDOBJECT,
     };
 
     /**
