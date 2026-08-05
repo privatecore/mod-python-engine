@@ -4,6 +4,8 @@
 // Include all hook category definitions
 #include "Defines/AccountHook.h"
 #include "Defines/AchievementHook.h"
+#include "Defines/ArenaHook.h"
+#include "Defines/ArenaTeamHook.h"
 #include "Defines/CreatureHook.h"
 #include "Defines/GameObjectHook.h"
 #include "Defines/ItemHook.h"

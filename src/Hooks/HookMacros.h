@@ -14,6 +14,12 @@
 #define TRIGGER_ACHIEVEMENT_HOOK(Hook, ...) \
     sPythonEngine->Trigger(PyEng::Hooks::Achievement::Hook, 0, ##__VA_ARGS__)
 
+#define TRIGGER_ARENA_HOOK(Hook, ...) \
+    sPythonEngine->Trigger(PyEng::Hooks::Arena::Hook, 0, ##__VA_ARGS__)
+
+#define TRIGGER_ARENATEAM_HOOK(Hook, ...) \
+    sPythonEngine->Trigger(PyEng::Hooks::ArenaTeam::Hook, 0, ##__VA_ARGS__)
+
 #define TRIGGER_CREATURE_HOOK(Hook, Entry, ...) \
     sPythonEngine->Trigger(PyEng::Hooks::Creature::Hook, Entry, ##__VA_ARGS__)
 
